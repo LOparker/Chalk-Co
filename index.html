@@ -1014,9 +1014,9 @@ function show(id){
 // ─── LANDING SCROLL ───
 function scrollsec(id){
   const el=document.getElementById(id);
-  const land=document.getElementById('land');
-  if(el&&land){land.scrollTo({top:el.offsetTop-70,behavior:'smooth'});}
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
 }
+
 
 // ─── CAROUSEL DOTS ───
 let di=0;
