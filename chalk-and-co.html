@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Chalk &amp; Co. — AI Lesson Planning for Teachers</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/tabler-icons.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --board:#2C4A3E;--board-dark:#1E3329;--board-light:#3A5E51;
+  --yellow:#F5C842;--pink:#E8A0A0;--blue:#8EB8D4;--green:#90C490;
+  --cream:#FDFAF4;--mid:#F5F0E4;--td:#1A2A24;--tm:#3D5A4F;
+  --tl:#7A9E95;--bdr:#D4CCBB;--s:'Georgia',serif;--u:'Segoe UI',system-ui,sans-serif;
+}
+html,body{height:100%;font-family:var(--u);background:var(--cream);color:var(--td);overflow:hidden}
+.pg{display:none;height:100vh;flex-direction:column;overflow:hidden}
+.pg.on{display:flex}
+/* ─── LANDING ─── */
+#land{background:var(--board-dark);overflow-y:auto;overflow-x:hidden;display:none;height:auto;min-height:100vh;flex-direction:column}
+#land.on{display:flex}
+.lnav{position:sticky;top:0;z-index:100;background:rgba(30,51,41,.96);backdrop-filter:blur(10px);height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
+.logo{font-family:var(--s);color:#fff;font-size:22px;display:flex;align-items:center;gap:8px;cursor:pointer;text-decoration:none}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--yellow);display:inline-block}
+.lnav-links{display:flex;gap:30px}
+.lnav-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:14px;cursor:pointer;transition:color .15s}
+.lnav-links a:hover{color:#fff}
+.lnav-r{display:flex;align-items:center;gap:10px}
+.btn-out{background:transparent;border:1.5px solid rgba(255,255,255,.3);color:#fff;padding:8px 20px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;font-family:var(--u);transition:all .2s}
+.btn-out:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+.btn-cta{background:var(--yellow);color:var(--board-dark);padding:8px 22px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:700;font-family:var(--u);transition:all .2s}
+.btn-cta:hover{filter:brightness(.92);transform:translateY(-1px)}
+.hero{padding:80px 48px 50px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1200px;margin:0 auto;width:100%}
+.eye{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--yellow);text-transform:uppercase;margin-bottom:14px}
+.h1{font-family:var(--s);font-size:50px;line-height:1.1;color:#fff;margin-bottom:18px}
+.h1 em{color:var(--yellow);font-style:normal}
+.hsub{font-size:16px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:28px}
+.hbtns{display:flex;gap:12px;align-items:center}
+.hbp{background:var(--yellow);color:var(--board-dark);padding:13px 28px;border-radius:10px;border:none;cursor:pointer;font-size:15px;font-weight:700;font-family:var(--u);transition:all .2s}
+.hbp:hover{filter:brightness(.92);transform:translateY(-2px)}
+.hbs{background:transparent;color:rgba(255,255,255,.75);padding:13px 22px;border-radius:10px;border:1.5px solid rgba(255,255,255,.25);cursor:pointer;font-size:15px;font-weight:600;font-family:var(--u);transition:all .2s}
+.hbs:hover{border-color:rgba(255,255,255,.6);color:#fff}
+.trust{margin-top:18px;font-size:12px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:16px}
+.trust span{display:flex;align-items:center;gap:5px}
+/* carousel */
+.car{border-radius:16px;overflow:hidden;box-shadow:0 20px 70px rgba(0,0,0,.5);height:410px;flex-shrink:0}
+.ctrack{display:flex;width:300%;animation:ss 12s infinite;height:100%}
+.cslide{width:33.333%;flex-shrink:0;height:100%}
+@keyframes ss{0%,30%{transform:translateX(0)}35%,63%{transform:translateX(-33.333%)}68%,96%{transform:translateX(-66.666%)}100%{transform:translateX(0)}}
+.cs{width:100%;height:100%;overflow:hidden}
+/* slide styles */
+.s1{background:#2C4A3E;padding:10px}
+.s1h{background:#1E3329;padding:8px 12px;border-radius:7px;margin-bottom:10px;display:flex;align-items:center;gap:8px;color:#fff;font-family:var(--s);font-size:13px}
+.ybadge{background:var(--yellow);color:var(--board-dark);font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px}
+.s1grid{display:grid;grid-template-columns:54px repeat(5,1fr);border-radius:7px;overflow:hidden;background:#fff}
+.s1gh{background:#1E3329;color:#fff;font-size:8px;padding:6px 3px;text-align:center;font-weight:700;border-right:1px solid rgba(255,255,255,.1)}
+.s1c{padding:3px;border-right:1px solid #e8e4d8;border-bottom:1px solid #e8e4d8;min-height:40px}
+.s1bl{border-radius:4px;padding:4px 5px;font-size:7.5px;color:#fff;line-height:1.3;font-weight:600}
+.s1t{padding:5px 3px;font-size:8px;color:#7A9E95;text-align:center;border-right:1px solid #e8e4d8;border-bottom:1px solid #e8e4d8;background:#fbfaf7}
+.s2{background:#f8f4ec}
+.s2h{background:#2C4A3E;padding:9px 12px;color:#fff;font-family:var(--s);font-size:12px;display:flex;align-items:center;gap:6px}
+.s2n{display:flex;background:#fff;border-bottom:2px solid #D4CCBB}
+.s2ni{padding:7px 12px;font-size:9.5px;font-weight:700;color:#7A9E95}
+.s2ni.a{color:#2C4A3E;border-bottom:2px solid #2C4A3E;margin-bottom:-2px}
+.s2hw{padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.s2it{background:#fff;border:1px solid #D4CCBB;border-radius:7px;padding:7px 9px;display:flex;gap:7px}
+.s2ic{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.s3{background:#1E3329;padding:12px}
+.s3t{color:rgba(255,255,255,.5);font-size:8.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.s3cs{display:flex;gap:5px;margin-bottom:10px}
+.s3c{flex:1;border-radius:6px;padding:5px 6px;font-size:7.5px;color:#fff;font-weight:700}
+.s3g{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.s3s{background:rgba(255,255,255,.07);border-radius:6px;padding:7px;text-align:center}
+.s3d{width:16px;height:16px;border-radius:50%;margin:0 auto 3px}
+.s3n{font-size:7.5px;color:rgba(255,255,255,.55)}
+.s3pv{background:rgba(255,255,255,.05);border-radius:7px;padding:8px 10px;margin-top:8px}
+.s3pvt{font-size:8px;color:rgba(255,255,255,.35);margin-bottom:5px;font-weight:700}
+.s3pvi{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border-radius:5px;padding:6px 8px}
+.cdots{display:flex;justify-content:center;gap:7px;margin-top:12px}
+.mdt{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.2);transition:background .3s}
+.mdt.a{background:var(--yellow)}
+/* strips */
+.fstrip{background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07);padding:18px 48px;display:flex;justify-content:center;gap:44px;flex-wrap:wrap}
+.fsi{display:flex;align-items:center;gap:9px;color:rgba(255,255,255,.65);font-size:13px}
+.fsi i{color:var(--yellow);font-size:19px}
+/* sections */
+.sec{padding:70px 48px;max-width:1200px;margin:0 auto;width:100%}
+.seye{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--yellow);text-transform:uppercase;text-align:center;margin-bottom:10px}
+.sh2{font-family:var(--s);font-size:36px;color:#fff;text-align:center;margin-bottom:12px}
+.ssub{font-size:15px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:44px}
+.fgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.fcard{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:22px}
+.fci{width:42px;height:42px;border-radius:9px;background:rgba(245,200,66,.12);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.fci i{color:var(--yellow);font-size:21px}
+.fcard h3{font-size:15px;font-weight:700;color:#fff;margin-bottom:7px}
+.fcard p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.7}
+.howsec{padding:70px 48px;background:rgba(0,0,0,.18);border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.how-in{max-width:860px;margin:0 auto}
+.howg{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:44px}
+.howst{text-align:center}
+.hwnum{width:46px;height:46px;border-radius:50%;background:var(--yellow);color:var(--board-dark);font-size:20px;font-weight:700;font-family:var(--s);display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.howst h3{color:#fff;font-size:15px;font-weight:700;margin-bottom:7px}
+.howst p{color:rgba(255,255,255,.5);font-size:13px;line-height:1.7}
+.testsec{padding:70px 48px;max-width:1200px;margin:0 auto;width:100%}
+.testg{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+.testc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:20px}
+.tstar{color:var(--yellow);font-size:13px;margin-bottom:9px}
+.ttxt{font-size:13px;color:rgba(255,255,255,.65);line-height:1.7;margin-bottom:12px;font-style:italic}
+.tau{font-size:12px;font-weight:700;color:#fff}
+.tro{font-size:11px;color:rgba(255,255,255,.4)}
+.ctaband{padding:56px 48px;text-align:center;background:rgba(245,200,66,.07);border-top:1px solid rgba(245,200,66,.15)}
+.ctaband h2{font-family:var(--s);font-size:34px;color:#fff;margin-bottom:12px}
+.ctaband p{color:rgba(255,255,255,.5);font-size:15px;margin-bottom:24px}
+.lfoot{padding:28px 48px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.lfoot p{font-size:12px;color:rgba(255,255,255,.3)}
+/* ─── PRICING ─── */
+#price{background:var(--board-dark)}
+.pnav{position:sticky;top:0;z-index:100;background:rgba(30,51,41,.96);backdrop-filter:blur(10px);height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0}
+.pscroll{overflow-y:auto;flex:1}
+.pbody{max-width:940px;margin:0 auto;padding:64px 24px 72px}
+.peye{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--yellow);text-transform:uppercase;text-align:center;margin-bottom:10px}
+.ph1{font-family:var(--s);font-size:40px;color:#fff;text-align:center;margin-bottom:12px}
+.psub{font-size:15px;color:rgba(255,255,255,.5);text-align:center;margin-bottom:32px}
+.btog{display:flex;align-items:center;justify-content:center;gap:13px;margin-bottom:44px}
+.btog span{font-size:14px;color:rgba(255,255,255,.5);font-weight:600}
+.btog span.a{color:#fff}
+.bsw{width:50px;height:26px;background:var(--board-light);border-radius:13px;position:relative;cursor:pointer;transition:background .2s}
+.bsw.y{background:var(--yellow)}
+.bkn{position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.bsw.y .bkn{left:27px}
+.svbdg{background:rgba(76,175,80,.15);color:#90c490;font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;border:1px solid rgba(76,175,80,.25)}
+.plangrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:44px}
+.planc{background:rgba(255,255,255,.05);border:1.5px solid rgba(255,255,255,.1);border-radius:15px;padding:26px;position:relative;transition:transform .2s}
+.planc:hover{transform:translateY(-3px)}
+.planc.pop{border-color:var(--yellow);background:rgba(245,200,66,.05)}
+.popbdg{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--yellow);color:var(--board-dark);font-size:10.5px;font-weight:800;padding:4px 16px;border-radius:20px;white-space:nowrap}
+.pname{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:5px}
+.ppr{font-family:var(--s);font-size:40px;color:#fff;line-height:1;margin-bottom:3px}
+.ppr sup{font-size:20px;vertical-align:top;margin-top:7px}
+.ppr sub{font-size:13px;color:rgba(255,255,255,.4);font-family:var(--u)}
+.pbil{font-size:11.5px;color:rgba(255,255,255,.32);margin-bottom:5px}
+.pann{font-size:11.5px;color:#90c490;min-height:16px;margin-bottom:18px}
+.pdiv{height:1px;background:rgba(255,255,255,.1);margin-bottom:18px}
+.pfl{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:22px}
+.pfl li{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:rgba(255,255,255,.65);line-height:1.5}
+.pfl li i{font-size:15px;flex-shrink:0;margin-top:1px}
+.pfl li:not(.dim) i{color:var(--yellow)}
+.pfl li.dim{color:rgba(255,255,255,.28)}
+.pfl li.dim i{color:rgba(255,255,255,.18)}
+.pbtn{width:100%;padding:11px;border-radius:9px;border:none;cursor:pointer;font-size:14px;font-weight:700;font-family:var(--u);transition:all .2s}
+.pby{background:var(--yellow);color:var(--board-dark)}.pby:hover{filter:brightness(.93)}
+.pbg{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.22)}.pbg:hover{border-color:rgba(255,255,255,.55)}
+.faqsec{margin-top:44px}
+.faqh{font-family:var(--s);font-size:25px;color:#fff;text-align:center;margin-bottom:24px}
+.faqg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.faqi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:16px}
+.faqq{font-size:13px;font-weight:700;color:#fff;margin-bottom:6px}
+.faqa{font-size:12.5px;color:rgba(255,255,255,.48);line-height:1.6}
+.guar{text-align:center;margin-top:36px;padding:22px;background:rgba(245,200,66,.06);border:1px solid rgba(245,200,66,.18);border-radius:13px}
+.guar i{font-size:26px;color:var(--yellow);margin-bottom:7px;display:block}
+.guar p{font-size:13.5px;color:rgba(255,255,255,.65);line-height:1.6}
+.guar strong{color:#fff}
+/* payment modal */
+#paymod{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;align-items:center;justify-content:center}
+#paymod.on{display:flex}
+.paybox{background:#fff;border-radius:16px;padding:32px;width:420px;max-width:95vw;position:relative}
+.paybox h2{font-family:var(--s);font-size:21px;color:var(--td);margin-bottom:3px}
+.paybox p{font-size:13px;color:var(--tl);margin-bottom:20px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fl{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.fl label{font-size:11px;font-weight:700;color:var(--tl);letter-spacing:.5px;text-transform:uppercase}
+.fl input{padding:9px 12px;border:1.5px solid var(--bdr);border-radius:8px;font-size:13px;font-family:var(--u);outline:none;transition:border .15s}
+.fl input:focus{border-color:var(--board)}
+.paysub{width:100%;padding:13px;background:var(--board);color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;font-family:var(--u);cursor:pointer;transition:all .2s}
+.paysub:hover{background:var(--board-light)}
+.payx{position:absolute;top:14px;right:14px;background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;line-height:1}
+/* ─── LOGIN ─── */
+#login{background:var(--board-dark);align-items:center;justify-content:center;position:relative}
+.bkbtn{position:absolute;top:22px;left:22px;color:rgba(255,255,255,.5);font-size:13px;cursor:pointer;display:flex;align-items:center;gap:5px;transition:color .15s;background:none;border:none;font-family:var(--u)}
+.bkbtn:hover{color:#fff}
+.lbox{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:36px;width:410px;box-shadow:0 20px 70px rgba(0,0,0,.4)}
+.llogo{font-family:var(--s);color:#fff;font-size:23px;display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:6px}
+.ltag{text-align:center;font-size:13px;color:rgba(255,255,255,.38);margin-bottom:24px}
+.ltabs{display:flex;background:rgba(255,255,255,.06);border-radius:9px;padding:3px;margin-bottom:22px}
+.ltab{flex:1;padding:8px;text-align:center;border-radius:7px;font-size:13px;font-weight:700;color:rgba(255,255,255,.42);cursor:pointer;transition:all .2s}
+.ltab.a{background:var(--yellow);color:var(--board-dark)}
+.lf{margin-bottom:14px}
+.lf label{display:block;font-size:11px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:5px;letter-spacing:.4px;text-transform:uppercase}
+.lf input{width:100%;padding:11px 13px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.14);border-radius:8px;color:#fff;font-size:14px;font-family:var(--u);outline:none;transition:border .2s}
+.lf input::placeholder{color:rgba(255,255,255,.22)}
+.lf input:focus{border-color:var(--yellow)}
+.lsub{width:100%;padding:12px;background:var(--yellow);color:var(--board-dark);border:none;border-radius:9px;font-size:14px;font-weight:700;font-family:var(--u);cursor:pointer;margin-top:6px}
+.lsub:hover{filter:brightness(.92)}
+.lftr{text-align:center;margin-top:16px;font-size:13px;color:rgba(255,255,255,.38)}
+.lftr a{color:var(--yellow);cursor:pointer}
+.lerr{background:rgba(244,67,54,.1);border:1px solid rgba(244,67,54,.28);color:#ff8a80;font-size:12px;padding:9px 12px;border-radius:8px;margin-bottom:12px;display:none}
+.lerr.on{display:block}
+.ldemo{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:9px;padding:11px 13px;margin-top:14px;font-size:12px;color:rgba(255,255,255,.4);text-align:center;line-height:1.6}
+.ldemo strong{color:rgba(255,255,255,.65)}
+.r2f{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+/* ─── APP ─── */
+#app{overflow:hidden}
+.appwrap{display:flex;flex-direction:column;height:100vh}
+.thdr{background:var(--board);height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;flex-shrink:0}
+.tlogo{font-family:var(--s);color:#fff;font-size:20px;display:flex;align-items:center;gap:8px}
+.vtog{display:flex;gap:3px;background:rgba(255,255,255,.1);border-radius:8px;padding:3px}
+.vb{padding:5px 15px;border-radius:6px;border:none;cursor:pointer;font-size:12px;font-weight:700;font-family:var(--u);transition:all .2s}
+.vb.a{background:var(--yellow);color:var(--board-dark)}
+.vb:not(.a){background:transparent;color:rgba(255,255,255,.6)}
+.vb:not(.a):hover{background:rgba(255,255,255,.1);color:#fff}
+.hdr-r{display:flex;align-items:center;gap:11px}
+.ava{width:30px;height:30px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--board-dark)}
+.ulbl{color:rgba(255,255,255,.75);font-size:13px;display:flex;align-items:center;gap:8px}
+.logoutbtn{background:transparent;border:1px solid rgba(255,255,255,.22);color:rgba(255,255,255,.6);padding:5px 11px;border-radius:7px;cursor:pointer;font-size:12px;font-family:var(--u);transition:all .15s}
+.logoutbtn:hover{border-color:rgba(255,255,255,.55);color:#fff}
+.main{display:flex;flex:1;overflow:hidden}
+/* sidebar */
+.sb{width:230px;background:var(--board);display:flex;flex-direction:column;padding:14px 0 8px;flex-shrink:0;overflow-y:auto}
+.sbl{font-size:9.5px;font-weight:700;letter-spacing:1.8px;color:rgba(255,255,255,.28);text-transform:uppercase;padding:0 20px;margin-bottom:4px;margin-top:10px}
+.ni{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:0 8px 1px;border-radius:9px;cursor:pointer;color:rgba(255,255,255,.58);font-size:13px;position:relative;transition:all .15s;user-select:none}
+.ni i{font-size:17px;width:21px;text-align:center;flex-shrink:0}
+.ni:hover{background:rgba(255,255,255,.07);color:#fff}
+.ni.a{background:rgba(245,200,66,.18);color:var(--yellow)}
+.nl{flex:1}
+.ico{width:16px;height:16px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-style:italic;font-family:Georgia,serif;color:rgba(255,255,255,.38);flex-shrink:0;cursor:help;transition:all .15s;position:relative}
+.ico:hover{background:var(--yellow);color:var(--board-dark)}
+.tip{display:none;position:absolute;left:calc(100% + 9px);top:50%;transform:translateY(-50%);background:#0d1e16;color:#fff;font-size:11px;line-height:1.45;padding:7px 11px;border-radius:7px;width:168px;z-index:500;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.1);font-style:normal;font-family:var(--u)}
+.tip::before{content:'';position:absolute;right:100%;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:#0d1e16}
+.ico:hover .tip{display:block}
+.sbdiv{height:1px;background:rgba(255,255,255,.08);margin:7px 13px}
+.sbver{font-size:10px;color:rgba(255,255,255,.16);text-align:center;padding:10px;margin-top:auto}
+/* content */
+.ct{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+.pgh{padding:17px 24px 14px;border-bottom:1px solid var(--bdr);background:#fff;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:10px}
+.pgt{font-family:var(--s);font-size:21px;color:var(--td);display:flex;align-items:center;gap:7px}
+.pgs{font-size:12px;color:var(--tl);margin-top:2px}
+.panel{display:none;padding:20px 24px}
+.panel.a{display:block}
+.btn{padding:7px 14px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:var(--u);transition:all .15s;display:inline-flex;align-items:center;gap:5px}
+.bbd{background:var(--board);color:#fff}.bbd:hover{background:var(--board-light)}
+.byy{background:var(--yellow);color:var(--board-dark)}.byy:hover{filter:brightness(.93)}
+.bgh{background:#fff;color:var(--td);border:1.5px solid var(--bdr)}.bgh:hover{background:var(--mid)}
+.bsm{padding:5px 10px;font-size:12px}
+.bico{padding:6px;border-radius:8px;background:#fff;border:1.5px solid var(--bdr);cursor:pointer;color:var(--tl);transition:all .15s}
+.bico:hover{background:var(--mid);color:var(--td)}
+.aibdg{display:inline-flex;align-items:center;gap:4px;background:var(--yellow);color:var(--board-dark);font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:18px}
+/* planner */
+.wknav{display:flex;align-items:center;gap:9px;margin-bottom:12px}
+.wklbl{font-weight:700;font-size:13px;color:var(--td)}
+.plwrap{border:1px solid var(--bdr);border-radius:11px;overflow:hidden;background:#fff}
+.pgrid{display:grid;grid-template-columns:70px repeat(5,1fr)}
+.plhd{background:var(--board);color:#fff;padding:9px 6px;font-size:11px;font-weight:700;text-align:center;border-right:1px solid rgba(255,255,255,.1)}
+.plhd:first-child{background:var(--board-dark);font-size:9px;letter-spacing:.4px}
+.pltime{padding:7px 4px;font-size:10px;color:var(--tl);text-align:center;border-right:1px solid var(--bdr);border-bottom:1px solid var(--bdr);background:#fbfaf7}
+.plc{padding:4px;border-right:1px solid var(--bdr);border-bottom:1px solid var(--bdr);min-height:60px;cursor:pointer;transition:background .1s}
+.plc:hover{background:var(--mid)}
+.lb{border-radius:6px;padding:5px 7px;font-size:10.5px;line-height:1.35;color:#fff}
+.lbt{font-weight:700;margin-bottom:1px}.lbs{opacity:.72;font-size:9.5px}
+.cm{background:#2C4A3E}.ce{background:#4A3A22}.csc{background:#3B2A50}.css{background:#5A3622}.car2{background:#4A2C3E}.cpe{background:#1A4060}
+.leg{display:flex;flex-wrap:wrap;gap:9px;margin-top:9px;font-size:11px;color:var(--tl)}
+.legi{display:flex;align-items:center;gap:4px}
+.legd{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+/* ai gen */
+.aig{background:var(--board);border-radius:11px;padding:16px;margin-bottom:16px;display:none}
+.aig.o{display:block}
+.ait{color:#fff;font-size:13px;font-weight:700;margin-bottom:11px;display:flex;align-items:center;gap:6px}
+.airow{display:flex;gap:9px;flex-wrap:wrap;align-items:flex-end}
+.aif{display:flex;flex-direction:column;gap:3px;flex:1;min-width:110px}
+.aif label{font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.48)}
+.aif select,.aif input{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.18);color:#fff;padding:7px 9px;border-radius:7px;font-size:13px;font-family:var(--u);outline:none}
+.aif select option{background:var(--board-dark);color:#fff}
+.aires{margin-top:12px;background:rgba(255,255,255,.08);border-radius:8px;padding:12px;color:#fff;font-size:12.5px;line-height:1.6;display:none}
+.aires.on{display:block}
+/* toggle */
+.tgl{width:42px;height:22px;background:var(--bdr);border-radius:11px;position:relative;cursor:pointer;flex-shrink:0;transition:background .2s}
+.tgl.on{background:var(--board)}
+.kn{position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tgl.on .kn{left:23px}
+/* card */
+.card{background:#fff;border:1px solid var(--bdr);border-radius:11px;padding:14px;margin-bottom:12px}
+.ctit{font-size:13px;font-weight:700;color:var(--td);margin-bottom:9px;display:flex;align-items:center;gap:6px}
+.ctit i{color:var(--board)}
+/* hw */
+.hwi{display:flex;align-items:flex-start;gap:11px;padding:11px;border:1px solid var(--bdr);border-radius:9px;margin-bottom:9px;background:#fff}
+.hwic{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hwic i{color:#fff;font-size:18px}
+.hwb{flex:1}
+.hwt{font-weight:700;font-size:13px;color:var(--td)}
+.hwm{font-size:11px;color:var(--tl);margin-top:2px}
+.hwd{font-size:10.5px;font-weight:700;color:#c0392b;margin-top:3px}
+.sp{font-size:10px;font-weight:700;padding:2px 7px;border-radius:11px;display:inline-flex}
+.spm{background:#e6f0ea;color:#1a4a2e}.spe{background:#f0ebe0;color:#4a3a00}.sps{background:#ebe6f5;color:#3b1a60}.spss{background:#f5ebe0;color:#5a2a00}
+/* parent mgmt */
+.invr{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:9px}
+.invr input{flex:1;min-width:120px;padding:8px 11px;border:1.5px solid var(--bdr);border-radius:7px;font-size:13px;font-family:var(--u);outline:none;transition:border .15s}
+.invr input:focus{border-color:var(--board)}
+.pr{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--mid);border-radius:8px;margin-bottom:6px}
+.pav{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;flex-shrink:0}
+.pi{flex:1}
+.pn{font-weight:700;font-size:13px;color:var(--td)}
+.pc2{font-size:11px;color:var(--board);font-weight:700}
+.pe{font-size:11px;color:var(--tl)}
+.bdg{font-size:10.5px;padding:3px 9px;border-radius:11px;font-weight:700}
+.bda{background:#e5f4eb;color:#1a6b2e}.bdp{background:#fff3dc;color:#8a5800}
+/* video */
+.vzone{border:2px dashed var(--bdr);border-radius:11px;padding:22px;text-align:center;cursor:pointer;color:var(--tl);font-size:13px;transition:all .2s;margin-bottom:12px}
+.vzone:hover{border-color:var(--board);color:var(--board);background:var(--mid)}
+.vzone i{font-size:28px;display:block;margin-bottom:6px}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:11px}
+.vcard{border:1px solid var(--bdr);border-radius:9px;overflow:hidden;background:#fff;cursor:pointer;transition:transform .15s}
+.vcard:hover{transform:translateY(-2px)}
+.vthumb{height:90px;background:var(--board);display:flex;align-items:center;justify-content:center}
+.vthumb i{color:rgba(255,255,255,.38);font-size:32px}
+.vinfo{padding:8px 10px}
+.vtit{font-size:12px;font-weight:700;color:var(--td)}
+.vdt{font-size:10.5px;color:var(--tl);margin-top:1px}
+/* behavior */
+.csys{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:12px}
+.cchip{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1.5px solid var(--bdr);border-radius:9px;flex:1;min-width:145px;background:#fff}
+.cdp{width:20px;height:20px;border-radius:50%;flex-shrink:0}
+.cchip input{border:none;font-size:13px;flex:1;color:var(--td);font-family:var(--u);background:transparent;outline:none}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:9px}
+.scard{background:#fff;border:1px solid var(--bdr);border-radius:9px;padding:12px}
+.sname{font-weight:700;font-size:13px;color:var(--td);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sav2{width:24px;height:24px;border-radius:50%;background:var(--mid);border:1px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:700;color:var(--tm)}
+.cpr{display:flex;gap:6px}
+.co{width:25px;height:25px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .15s}
+.co:hover{transform:scale(1.1)}
+.co.s{border-color:var(--td);transform:scale(1.16)}
+/* settings */
+.scard2{background:#fff;border:1px solid var(--bdr);border-radius:11px;margin-bottom:12px;overflow:hidden}
+.schdr{padding:11px 15px;background:var(--mid);border-bottom:1px solid var(--bdr);font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--tm)}
+.srow{display:flex;align-items:center;padding:11px 15px;border-bottom:1px solid var(--bdr);gap:11px}
+.srow:last-child{border-bottom:none}
+.srt{flex:1}
+.srl{font-size:13px;font-weight:700;color:var(--td)}
+.srd{font-size:11.5px;color:var(--tl);margin-top:1px}
+/* parent view */
+#pv{display:none;flex-direction:column;flex:1;overflow:hidden}
+.pvhdr{background:var(--board);padding:13px 22px;color:#fff;flex-shrink:0}
+.pvht{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.pvlog{font-family:var(--s);font-size:17px;display:flex;align-items:center;gap:6px}
+.pvnav{display:flex;background:#fff;border-bottom:2px solid var(--bdr);flex-shrink:0}
+.pvni{padding:12px 20px;font-size:13px;font-weight:700;color:var(--tl);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s}
+.pvni.a{color:var(--board);border-bottom-color:var(--board)}
+.pvni:hover:not(.a){color:var(--td)}
+.pvc{padding:20px 24px;overflow-y:auto;flex:1}
+.pvtab{display:none}
+.pvtab.a{display:block}
+.pvth{font-size:15px;font-weight:700;color:var(--td);margin-bottom:4px;font-family:var(--s)}
+.pvts{font-size:12px;color:var(--tl);margin-bottom:14px}
+.bdisp{background:#fff;border:1px solid var(--bdr);border-radius:15px;padding:26px 22px;text-align:center;max-width:290px;margin:0 auto}
+.bcircle{width:86px;height:86px;border-radius:50%;margin:12px auto;box-shadow:0 4px 20px rgba(0,0,0,.12)}
+.blbl{font-size:19px;font-weight:700;color:var(--td);font-family:var(--s);margin-bottom:4px}
+.bdesc{font-size:13px;color:var(--tl)}
+.bhist{margin-top:18px;display:flex;gap:7px;justify-content:center}
+.bhd{text-align:center;display:flex;flex-direction:column;align-items:center;gap:3px}
+.bhdot{width:18px;height:18px;border-radius:50%}
+.bhlbl{font-size:9.5px;color:var(--tl)}
+/* ai chat */
+.aichat{position:fixed;bottom:18px;right:18px;z-index:1000;display:flex;flex-direction:column;align-items:flex-end;gap:9px}
+.aibn{width:50px;height:50px;border-radius:50%;background:var(--board);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:21px;box-shadow:0 4px 14px rgba(0,0,0,.22);transition:all .2s}
+.aibn:hover{background:var(--board-light);transform:scale(1.05)}
+.aiwin{background:#fff;border:1px solid var(--bdr);border-radius:13px;width:305px;box-shadow:0 8px 28px rgba(0,0,0,.11);display:none;flex-direction:column;overflow:hidden;max-height:400px}
+.aiwin.o{display:flex}
+.aiwh{background:var(--board);padding:11px 13px;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;justify-content:space-between}
+.aiwh button{background:none;border:none;color:rgba(255,255,255,.55);cursor:pointer;font-size:15px;line-height:1}
+.aimsgs{flex:1;overflow-y:auto;padding:11px;display:flex;flex-direction:column;gap:7px}
+.am{padding:7px 10px;border-radius:9px;font-size:12px;line-height:1.5;max-width:87%}
+.am.b{background:var(--mid);color:var(--td);align-self:flex-start}
+.am.u{background:var(--board);color:#fff;align-self:flex-end}
+.ainrow{padding:9px;border-top:1px solid var(--bdr);display:flex;gap:6px}
+.ainrow input{flex:1;padding:7px 10px;border:1px solid var(--bdr);border-radius:7px;font-size:13px;font-family:var(--u);outline:none}
+.ainrow input:focus{border-color:var(--board)}
+.ainrow button{padding:7px 11px;background:var(--board);color:#fff;border:none;border-radius:7px;cursor:pointer;font-size:13px}
+/* toast */
+.toast{position:fixed;bottom:76px;left:50%;transform:translateX(-50%);background:var(--board);color:#fff;padding:9px 18px;border-radius:9px;font-size:13px;font-weight:600;z-index:3000;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ LANDING ═══════════ -->
+<div id="land" class="pg on" style="height:auto;min-height:100vh;overflow-y:auto;overflow-x:hidden">
+<nav class="lnav">
+  <div class="logo"><span class="dot"></span>Chalk <span style="opacity:.4;margin:0 2px">&</span> Co.</div>
+  <div class="lnav-links">
+    <a onclick="scrollsec('feat-sec')">Features</a>
+    <a onclick="scrollsec('how-sec')">How it works</a>
+    <a onclick="show('price')">Pricing</a>
+  </div>
+  <div class="lnav-r">
+    <button class="btn-out" onclick="show('login')">Log in</button>
+    <button class="btn-cta" onclick="show('price')">Start free trial</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div>
+    <div class="eye"><i class="ti ti-sparkles"></i> AI-powered for K–12 teachers</div>
+    <h1 class="h1">Lesson planning,<br/><em>reimagined.</em></h1>
+    <p class="hsub">Chalk & Co. combines AI lesson generation, a private parent portal, behavior tracking, and homework management — all in one beautiful classroom hub.</p>
+    <div class="hbtns">
+      <button class="hbp" onclick="show('price')">Start your free trial</button>
+      <button class="hbs" onclick="show('login')">Sign in →</button>
+    </div>
+    <div class="trust">
+      <span><i class="ti ti-check"></i> 14-day free trial</span>
+      <span><i class="ti ti-check"></i> No credit card to start</span>
+      <span><i class="ti ti-check"></i> Cancel anytime</span>
+    </div>
+  </div>
+  <div>
+    <div class="car">
+      <div class="ctrack">
+        <!-- Slide 1: Planner -->
+        <div class="cslide"><div class="cs s1">
+          <div class="s1h"><span class="dot"></span>Chalk & Co.<span class="ybadge" style="margin-left:6px">✦ AI Planner</span></div>
+          <div class="s1grid">
+            <div class="s1gh" style="font-size:7px"></div>
+            <div class="s1gh">Mon</div><div class="s1gh">Tue</div><div class="s1gh">Wed</div><div class="s1gh">Thu</div><div class="s1gh">Fri</div>
+            <div class="s1t">8:30</div>
+            <div class="s1c"><div class="s1bl" style="background:#2C4A3E">Math<br/>Addition</div></div>
+            <div class="s1c"><div class="s1bl" style="background:#2C4A3E">Math<br/>Subtraction</div></div>
+            <div class="s1c"><div class="s1bl" style="background:#2C4A3E">Math<br/>Word prob.</div></div>
+            <div class="s1c"><div class="s1bl" style="background:#2C4A3E">Math<br/>Quiz prep</div></div>
+            <div class="s1c"><div class="s1bl" style="background:#2C4A3E">Math<br/>Quiz day</div></div>
+            <div class="s1t">9:30</div>
+            <div class="s1c"><div class="s1bl" style="background:#4A3A22">ELA<br/>Fiction</div></div>
+            <div class="s1c"><div class="s1bl" style="background:#4A3A22">ELA<br/>Vocab</div></div>
+            <div class="s1c"><div class="s1bl" style="background:#4A3A22">ELA<br/>Writing</div></div>
+            <div class="s1c"><div class="s1bl" style="background:#4A3A22">ELA<br/>Reading</div></div>
+            <div class="s1c"><div class="s1bl" style="background:#4A3A22">ELA<br/>Reflect</div></div>
+            <div class="s1t">10:30</div>
+            <div class="s1c"></div>
+            <div class="s1c"><div class="s1bl" style="background:#3B2A50">Sci<br/>Plants</div></div>
+            <div class="s1c"></div>
+            <div class="s1c"><div class="s1bl" style="background:#3B2A50">Sci<br/>Lab</div></div>
+            <div class="s1c"><div class="s1bl" style="background:#4A2C3E">Art<br/>Paint</div></div>
+          </div>
+          <div style="margin:8px 0 4px;color:rgba(255,255,255,.45);font-size:8.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase">AI generating your lesson now...</div>
+          <div style="background:rgba(255,255,255,.09);border-radius:7px;padding:8px 10px;font-size:8px;color:#fff;line-height:1.5">
+            <span style="color:var(--yellow);font-weight:700">Math — Multiplication Arrays (3.OA.A.1)</span><br/>
+            Objective: Model multiplication using equal groups · 45 min<br/>
+            Activities: Array hopscotch · Whiteboard practice · Exit ticket
+          </div>
+        </div></div>
+        <!-- Slide 2: Parent Portal -->
+        <div class="cslide"><div class="cs s2">
+          <div class="s2h"><span class="dot"></span>Chalk & Co. <span style="font-size:10px;opacity:.55;margin-left:6px;font-weight:400">Parent portal</span></div>
+          <div class="s2n"><div class="s2ni a">Homework</div><div class="s2ni">How we learned it</div><div class="s2ni">Behavior</div></div>
+          <div class="s2hw">
+            <div style="font-size:10px;font-weight:700;color:#1A2A24;margin-bottom:5px">Emma's homework this week</div>
+            <div class="s2it"><div class="s2ic" style="background:#2C4A3E">📐</div><div><div style="font-size:10px;font-weight:700;color:#1A2A24">Math — Addition worksheet</div><div style="font-size:8.5px;color:#7A9E95">Pages 24–25 in workbook</div><div style="font-size:8.5px;font-weight:700;color:#c0392b">Due Tuesday</div></div></div>
+            <div class="s2it"><div class="s2ic" style="background:#4A3A22">📖</div><div><div style="font-size:10px;font-weight:700;color:#1A2A24">Read Charlotte's Web Ch. 4–5</div><div style="font-size:8.5px;color:#7A9E95">Record 3 vocabulary words</div><div style="font-size:8.5px;font-weight:700;color:#c0392b">Due Wednesday</div></div></div>
+            <div class="s2it"><div class="s2ic" style="background:#3B2A50">🌱</div><div><div style="font-size:10px;font-weight:700;color:#1A2A24">Science journal — plant sketch</div><div style="font-size:8.5px;color:#7A9E95">Draw and label plant parts</div><div style="font-size:8.5px;font-weight:700;color:#c0392b">Due Friday</div></div></div>
+            <div style="background:#fff;border:1px solid #D4CCBB;border-radius:8px;padding:8px 10px">
+              <div style="font-size:9px;font-weight:700;color:#2C4A3E;margin-bottom:5px">🎬 How we learned it</div>
+              <div style="display:flex;gap:5px">
+                <div style="flex:1;height:38px;background:#2C4A3E;border-radius:4px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);font-size:14px">▶</div>
+                <div style="flex:1;height:38px;background:#2C4A3E;border-radius:4px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);font-size:14px">▶</div>
+                <div style="flex:1;height:38px;background:#2C4A3E;border-radius:4px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.45);font-size:14px">▶</div>
+              </div>
+            </div>
+          </div>
+        </div></div>
+        <!-- Slide 3: Behavior -->
+        <div class="cslide"><div class="cs s3">
+          <div class="s3t">Behavior chart — today's colors</div>
+          <div class="s3cs">
+            <div class="s3c" style="background:#4CAF50">🌟 Great day!</div>
+            <div class="s3c" style="background:#FFD700;color:#333">👍 Good effort</div>
+            <div class="s3c" style="background:#FF9800">⚠️ Reminder</div>
+            <div class="s3c" style="background:#F44336">📋 Tough day</div>
+          </div>
+          <div class="s3g">
+            <div class="s3s"><div class="s3d" style="background:#4CAF50"></div><div class="s3n">Emma R.</div></div>
+            <div class="s3s"><div class="s3d" style="background:#FFD700"></div><div class="s3n">Liam T.</div></div>
+            <div class="s3s"><div class="s3d" style="background:#4CAF50"></div><div class="s3n">Sofia M.</div></div>
+            <div class="s3s"><div class="s3d" style="background:#FF9800"></div><div class="s3n">Noah K.</div></div>
+            <div class="s3s"><div class="s3d" style="background:#4CAF50"></div><div class="s3n">Ava J.</div></div>
+            <div class="s3s"><div class="s3d" style="background:#F44336"></div><div class="s3n">Marcus B.</div></div>
+            <div class="s3s"><div class="s3d" style="background:#4CAF50"></div><div class="s3n">Priya L.</div></div>
+            <div class="s3s"><div class="s3d" style="background:#FFD700"></div><div class="s3n">Oliver C.</div></div>
+          </div>
+          <div class="s3pv">
+            <div class="s3pvt"><i class="ti ti-lock"></i> Parent view — each parent sees only their child</div>
+            <div class="s3pvi">
+              <div style="width:26px;height:26px;border-radius:50%;background:#4CAF50;flex-shrink:0"></div>
+              <div><div style="font-size:10px;font-weight:700;color:#fff">Great day! 🌟</div><div style="font-size:8.5px;color:rgba(255,255,255,.42)">Emma had a wonderful day in class</div></div>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <div class="cdots"><div class="mdt a" id="d0"></div><div class="mdt" id="d1"></div><div class="mdt" id="d2"></div></div>
+  </div>
+</div><!-- hero -->
+
+<div class="fstrip">
+  <div class="fsi"><i class="ti ti-sparkles"></i> AI lesson generator</div>
+  <div class="fsi"><i class="ti ti-calendar-week"></i> Weekly planner</div>
+  <div class="fsi"><i class="ti ti-users"></i> Parent portal</div>
+  <div class="fsi"><i class="ti ti-chart-bar"></i> Behavior chart</div>
+  <div class="fsi"><i class="ti ti-video"></i> Teaching videos</div>
+  <div class="fsi"><i class="ti ti-lock"></i> Privacy-first</div>
+</div>
+
+<div id="feat-sec" class="sec">
+  <div class="seye">Everything you need</div>
+  <h2 class="sh2">Built for the modern classroom</h2>
+  <p class="ssub">From AI lesson plans to parent communication — all in one place.</p>
+  <div class="fgrid">
+    <div class="fcard"><div class="fci"><i class="ti ti-sparkles"></i></div><h3>AI lesson generator</h3><p>Generate complete lesson plans with objectives, activities, materials, and homework in seconds — aligned to your grade and standards.</p></div>
+    <div class="fcard"><div class="fci"><i class="ti ti-calendar-week"></i></div><h3>Weekly planner</h3><p>Color-coded weekly grid by subject. View your whole week at a glance and export to PDF anytime.</p></div>
+    <div class="fcard"><div class="fci"><i class="ti ti-users"></i></div><h3>Parent portal</h3><p>Invite parents by email to a private portal. They see only their child's homework, videos, and behavior — nothing else.</p></div>
+    <div class="fcard"><div class="fci"><i class="ti ti-chart-bar"></i></div><h3>Behavior tracking</h3><p>Color-coded daily chart with fully customizable meanings. Parents see only their own child's color — total class privacy guaranteed.</p></div>
+    <div class="fcard"><div class="fci"><i class="ti ti-video"></i></div><h3>"How we learned it" videos</h3><p>Upload short teaching videos so parents can help at home using the same methods you use in class.</p></div>
+    <div class="fcard"><div class="fci"><i class="ti ti-lock"></i></div><h3>Privacy by design</h3><p>Teachers control all access. Parents are invite-only. Student data is never shared between families. Every toggle is yours.</p></div>
+  </div>
+</div>
+
+<div id="how-sec" class="howsec">
+  <div class="how-in">
+    <div class="seye">Simple by design</div>
+    <h2 class="sh2" style="text-align:center">Up and running in minutes</h2>
+    <div class="howg">
+      <div class="howst"><div class="hwnum">1</div><h3>Create your classroom</h3><p>Sign up, pick your grade level, and you're in. No long onboarding — just your classroom, ready to go.</p></div>
+      <div class="howst"><div class="hwnum">2</div><h3>Generate your week</h3><p>Tell the AI your subject, standard, and duration. It builds a complete plan. You approve, edit, and place it on the planner.</p></div>
+      <div class="howst"><div class="hwnum">3</div><h3>Invite families</h3><p>Send a private email invite to each parent. They get their own portal with homework, videos, and behavior — personalized to their child.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="testsec">
+  <div class="seye">Loved by teachers</div>
+  <h2 class="sh2">What educators are saying</h2>
+  <div class="testg">
+    <div class="testc"><div class="tstar">★★★★★</div><p class="ttxt">"I used to spend three hours Sunday planning. Now the AI builds a draft in two minutes and I spend 20 personalizing it. Life changing."</p><div class="tau">Maria G.</div><div class="tro">3rd Grade · Texas</div></div>
+    <div class="testc"><div class="tstar">★★★★★</div><p class="ttxt">"The parent portal is exactly what I needed. Parents see homework without me answering 30 individual emails a week."</p><div class="tau">James K.</div><div class="tro">4th Grade · Ohio</div></div>
+    <div class="testc"><div class="tstar">★★★★★</div><p class="ttxt">"The behavior chart is so thoughtful. Parents see only their child's color. No comparisons, no drama. My families love it."</p><div class="tau">Tanya R.</div><div class="tro">2nd Grade · California</div></div>
+  </div>
+</div>
+
+<div class="ctaband">
+  <h2>Ready to transform your classroom?</h2>
+  <p>14-day free trial. No credit card required.</p>
+  <button class="hbp" onclick="show('price')">See plans &amp; pricing →</button>
+</div>
+<div class="lfoot">
+  <div class="logo"><span class="dot"></span>Chalk &amp; Co.</div>
+  <p>© 2026 Chalk &amp; Co. All rights reserved.</p>
+  <p>Built for teachers, by people who care about classrooms.</p>
+</div>
+</div><!-- end landing -->
+
+<!-- ═══════════ PRICING ═══════════ -->
+<div id="price" class="pg" style="background:var(--board-dark)">
+<nav class="pnav">
+  <div class="logo" onclick="show('land')" style="cursor:pointer"><span class="dot"></span>Chalk <span style="opacity:.4;margin:0 2px">&</span> Co.</div>
+  <div class="lnav-links"><a onclick="show('land')">← Back to home</a></div>
+  <div class="lnav-r"><button class="btn-out" onclick="show('login')">Log in</button></div>
+</nav>
+<div class="pscroll">
+<div class="pbody">
+
+  <!-- NO FREE TIER BANNER -->
+  <div style="background:rgba(245,200,66,.1);border:1px solid rgba(245,200,66,.25);border-radius:12px;padding:14px 20px;text-align:center;margin-bottom:32px;display:flex;align-items:center;justify-content:center;gap:10px">
+    <i class="ti ti-lock-open" style="color:var(--yellow);font-size:18px"></i>
+    <span style="color:rgba(255,255,255,.8);font-size:14px"><strong style="color:var(--yellow)">Every plan includes a 14-day free trial.</strong> No credit card required to start — cancel or downgrade anytime.</span>
+  </div>
+
+  <div class="peye">Invest in your classroom</div>
+  <h1 class="ph1">Simple plans. Real results.</h1>
+  <p class="psub">Every plan is fully paid — because a tool this powerful deserves to be properly supported. No ads, no data selling, no surprises. Just Chalk &amp; Co. working for you.</p>
+
+  <div class="btog">
+    <span id="lbm" class="a">Monthly</span>
+    <div class="bsw" id="bsw" onclick="togBill()"><div class="bkn"></div></div>
+    <span id="lby">Annually</span>
+    <span class="svbdg">💰 Save 2 months free</span>
+  </div>
+
+  <div class="plangrid">
+
+    <!-- ESSENTIAL -->
+    <div class="planc">
+      <div class="pname">Essential</div>
+      <div class="ppr" id="esspr"><sup>$</sup>9<sub>/mo</sub></div>
+      <div class="pbil" id="essbi">Billed monthly · cancel anytime</div>
+      <div class="pann" id="essan" style="color:#90c490;font-size:11.5px;min-height:16px;margin-bottom:18px"></div>
+      <div class="pdiv"></div>
+      <ul class="pfl">
+        <li><i class="ti ti-check"></i>Full weekly planner</li>
+        <li><i class="ti ti-check"></i>25 AI lesson plans / month</li>
+        <li><i class="ti ti-check"></i>Up to 30 students</li>
+        <li><i class="ti ti-check"></i>Unlimited parent invites</li>
+        <li><i class="ti ti-check"></i>Homework assignments portal</li>
+        <li class="dim"><i class="ti ti-x"></i>Behavior chart</li>
+        <li class="dim"><i class="ti ti-x"></i>Teaching videos</li>
+        <li class="dim"><i class="ti ti-x"></i>PDF export</li>
+      </ul>
+      <button class="pbtn pbg" onclick="openpay('Essential')">Start 14-day free trial</button>
+      <div style="text-align:center;font-size:11px;color:rgba(255,255,255,.3);margin-top:10px">No credit card required to start</div>
+    </div>
+
+    <!-- PRO — POPULAR -->
+    <div class="planc pop">
+      <div class="popbdg">⭐ Most popular</div>
+      <div class="pname">Pro</div>
+      <div class="ppr" id="propr"><sup>$</sup>16<sub>/mo</sub></div>
+      <div class="pbil" id="probi">Billed monthly · cancel anytime</div>
+      <div class="pann" id="proan" style="color:#90c490;font-size:11.5px;min-height:16px;margin-bottom:18px"></div>
+      <div class="pdiv"></div>
+      <ul class="pfl">
+        <li><i class="ti ti-check"></i>Everything in Essential</li>
+        <li><i class="ti ti-check"></i>Unlimited AI lesson plans</li>
+        <li><i class="ti ti-check"></i>Up to 40 students</li>
+        <li><i class="ti ti-check"></i>Behavior chart + custom colors</li>
+        <li><i class="ti ti-check"></i>Upload 20 teaching videos</li>
+        <li><i class="ti ti-check"></i>PDF export &amp; print</li>
+        <li><i class="ti ti-check"></i>Priority email support</li>
+      </ul>
+      <button class="pbtn pby" onclick="openpay('Pro')">Start 14-day free trial</button>
+      <div style="text-align:center;font-size:11px;color:rgba(255,255,255,.3);margin-top:10px">No credit card required to start</div>
+    </div>
+
+    <!-- SCHOOL -->
+    <div class="planc">
+      <div class="pname">School</div>
+      <div class="ppr" id="schpr"><sup>$</sup>12<sub>/teacher/mo</sub></div>
+      <div class="pbil" id="schbi">Min. 3 teachers · billed monthly</div>
+      <div class="pann" id="schan" style="color:#90c490;font-size:11.5px;min-height:16px;margin-bottom:18px"></div>
+      <div class="pdiv"></div>
+      <ul class="pfl">
+        <li><i class="ti ti-check"></i>Everything in Pro</li>
+        <li><i class="ti ti-check"></i>Unlimited students &amp; classes</li>
+        <li><i class="ti ti-check"></i>Unlimited teaching videos</li>
+        <li><i class="ti ti-check"></i>School-wide planner dashboard</li>
+        <li><i class="ti ti-check"></i>Admin controls &amp; reporting</li>
+        <li><i class="ti ti-check"></i>Dedicated account manager</li>
+        <li><i class="ti ti-check"></i>Centralized school billing</li>
+      </ul>
+      <button class="pbtn pbg" onclick="openpay('School')">Start 14-day free trial</button>
+      <div style="text-align:center;font-size:11px;color:rgba(255,255,255,.3);margin-top:10px">No credit card required to start</div>
+    </div>
+
+  </div>
+
+  <!-- VALUE COMPARISON -->
+  <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:22px 26px;margin-bottom:44px">
+    <div style="font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:14px;display:flex;align-items:center;gap:7px"><i class="ti ti-chart-bar"></i> How we compare to the market</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;font-size:12px">
+      <div style="padding:8px 12px;font-weight:700;color:rgba(255,255,255,.4);border-bottom:1px solid rgba(255,255,255,.08)">Product</div>
+      <div style="padding:8px 12px;font-weight:700;color:rgba(255,255,255,.4);border-bottom:1px solid rgba(255,255,255,.08)">Price/mo</div>
+      <div style="padding:8px 12px;font-weight:700;color:rgba(255,255,255,.4);border-bottom:1px solid rgba(255,255,255,.08)">Parent portal</div>
+      <div style="padding:8px 12px;font-weight:700;color:rgba(255,255,255,.4);border-bottom:1px solid rgba(255,255,255,.08)">Behavior chart</div>
+      <div style="padding:8px 12px;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.06)">Planbook</div>
+      <div style="padding:8px 12px;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.06)">$2–$8</div>
+      <div style="padding:8px 12px;color:#f44336;border-bottom:1px solid rgba(255,255,255,.06)">✕ No</div>
+      <div style="padding:8px 12px;color:#f44336;border-bottom:1px solid rgba(255,255,255,.06)">✕ No</div>
+      <div style="padding:8px 12px;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.06)">Planlark Pro</div>
+      <div style="padding:8px 12px;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.06)">$9/mo</div>
+      <div style="padding:8px 12px;color:#f44336;border-bottom:1px solid rgba(255,255,255,.06)">✕ No</div>
+      <div style="padding:8px 12px;color:#f44336;border-bottom:1px solid rgba(255,255,255,.06)">✕ No</div>
+      <div style="padding:8px 12px;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.06)">Common Curriculum</div>
+      <div style="padding:8px 12px;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.06)">$5.59/mo</div>
+      <div style="padding:8px 12px;color:#f44336;border-bottom:1px solid rgba(255,255,255,.06)">✕ No</div>
+      <div style="padding:8px 12px;color:#f44336;border-bottom:1px solid rgba(255,255,255,.06)">✕ No</div>
+      <div style="padding:8px 12px;background:rgba(245,200,66,.08);border-radius:7px;font-weight:700;color:var(--yellow)">Chalk &amp; Co. Pro</div>
+      <div style="padding:8px 12px;background:rgba(245,200,66,.08);font-weight:700;color:var(--yellow)">$16/mo</div>
+      <div style="padding:8px 12px;background:rgba(245,200,66,.08);color:#4CAF50;font-weight:700">✓ Yes</div>
+      <div style="padding:8px 12px;background:rgba(245,200,66,.08);color:#4CAF50;font-weight:700">✓ Yes</div>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:rgba(255,255,255,.35);font-style:italic">No competitor combines AI lesson planning + a private parent portal + behavior tracking in a single tool.</div>
+  </div>
+
+  <div class="guar"><i class="ti ti-shield-check"></i><p><strong>14-day free trial on every plan — no credit card needed to start.</strong><br/>After your trial, pick the plan that fits. Not happy within your first 30 days of paying? We'll refund every cent, no questions asked.</p></div>
+
+  <div class="faqsec">
+    <div class="faqh">Common questions</div>
+    <div class="faqg">
+      <div class="faqi"><div class="faqq">Is there a free plan?</div><div class="faqa">No — we don't offer a free tier. Every plan is paid because we're committed to building a best-in-class product, not selling ads or your data. Your 14-day trial gives you full access to try everything risk-free.</div></div>
+      <div class="faqi"><div class="faqq">Can I switch between monthly and annual?</div><div class="faqa">Yes. Switch anytime from account settings. Annual savings kick in from your next billing cycle. Downgrade to a lower plan anytime too.</div></div>
+      <div class="faqi"><div class="faqq">What happens after my 14-day trial?</div><div class="faqa">You'll choose a plan and add a card. We'll email you 3 days before your trial ends as a reminder — no surprise charges. Cancel before then and you pay nothing.</div></div>
+      <div class="faqi"><div class="faqq">Can parents see other students?</div><div class="faqa">Never. Each parent sees only their own child's homework, behavior color, and videos. Privacy is enforced at the account level — it's not a setting that can be turned off.</div></div>
+      <div class="faqi"><div class="faqq">Do you offer school or district discounts?</div><div class="faqa">Yes — the School plan already includes a per-teacher discount. Contact us for districts buying 20+ seats; we offer custom volume pricing and annual invoicing.</div></div>
+      <div class="faqi"><div class="faqq">Why no free plan?</div><div class="faqa">Free products monetize through ads, selling data, or neglecting the product. We do none of that. A paid model means we're accountable to you — the teacher — not to advertisers.</div></div>
+    </div>
+  </div>
+
+</div>
+</div>
+</div><!-- end pricing -->
+
+<!-- PAYMENT MODAL -->
+<div id="paymod">
+  <div class="paybox">
+    <button class="payx" onclick="document.getElementById('paymod').classList.remove('on')">✕</button>
+    <h2 id="paynm">Pro Plan</h2>
+    <p id="paysub2">14-day free trial, then $12/month</p>
+    <div class="r2">
+      <div class="fl"><label>First name</label><input type="text" placeholder="Sarah"/></div>
+      <div class="fl"><label>Last name</label><input type="text" placeholder="Sullivan"/></div>
+    </div>
+    <div class="fl"><label>Email address</label><input type="email" placeholder="you@school.edu"/></div>
+    <div class="fl"><label>Card number</label><input type="text" placeholder="1234 5678 9012 3456"/></div>
+    <div class="r2">
+      <div class="fl"><label>Expiry</label><input type="text" placeholder="MM / YY"/></div>
+      <div class="fl"><label>CVV</label><input type="text" placeholder="123"/></div>
+    </div>
+    <button class="paysub" onclick="startTrial()">Start my free trial</button>
+    <div style="text-align:center;margin-top:10px;font-size:11.5px;color:var(--tl)"><i class="ti ti-lock"></i> You won't be charged until your trial ends.</div>
+  </div>
+</div>
+
+<!-- ═══════════ LOGIN ═══════════ -->
+<div id="login" class="pg" style="background:var(--board-dark)">
+  <button class="bkbtn" onclick="show('land')"><i class="ti ti-arrow-left"></i> Back to home</button>
+  <div class="lbox">
+    <div class="llogo"><span class="dot"></span>Chalk &amp; Co.</div>
+    <div class="ltag">The AI classroom hub for teachers</div>
+    <div class="ltabs">
+      <div class="ltab a" id="tsi" onclick="ltab('si')">Sign in</div>
+      <div class="ltab" id="tsu" onclick="ltab('su')">Create account</div>
+    </div>
+    <div id="lerr" class="lerr">Incorrect email or password. Try <strong>teacher@chalk.co</strong> / <strong>chalk2026</strong></div>
+    <!-- sign in form -->
+    <div id="fsi">
+      <div class="lf"><label>Email address</label><input type="email" id="sie" placeholder="you@school.edu"/></div>
+      <div class="lf"><label>Password</label><input type="password" id="sip" placeholder="••••••••" onkeydown="if(event.key==='Enter')dologin()"/></div>
+      <button class="lsub" onclick="dologin()">Sign in to my classroom</button>
+      <div class="lftr"><a onclick="show('price')">Start a free trial →</a> · <a onclick="toast('Password reset email sent!')">Forgot password?</a></div>
+      <div class="ldemo"><strong>Demo credentials:</strong><br/>Email: <strong>teacher@chalk.co</strong><br/>Password: <strong>chalk2026</strong></div>
+    </div>
+    <!-- sign up form -->
+    <div id="fsu" style="display:none">
+      <div class="r2f">
+        <div class="lf"><label>First name</label><input type="text" placeholder="Sarah"/></div>
+        <div class="lf"><label>Last name</label><input type="text" placeholder="Sullivan"/></div>
+      </div>
+      <div class="lf"><label>Email</label><input type="email" placeholder="you@school.edu"/></div>
+      <div class="lf"><label>Password</label><input type="password" placeholder="Create a password"/></div>
+      <div class="lf"><label>Grade level</label><input type="text" placeholder="e.g. Grade 3"/></div>
+      <button class="lsub" onclick="show('price')">Create account &amp; choose plan</button>
+      <div class="lftr">Already have an account? <a onclick="ltab('si')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ APP ═══════════ -->
+<div id="app" class="pg">
+<div class="appwrap">
+  <!-- TOP HEADER -->
+  <div class="thdr">
+    <div class="tlogo"><span class="dot"></span>Chalk <span style="opacity:.4;margin:0 2px">&</span> Co.</div>
+    <div class="vtog">
+      <button class="vb a" id="bT" onclick="sv('t')">Teacher view</button>
+      <button class="vb" id="bP" onclick="sv('p')">Parent portal</button>
+    </div>
+    <div class="hdr-r">
+      <span class="ulbl"><div class="ava">MS</div>Ms. Sullivan</span>
+      <button class="logoutbtn" onclick="doLogout()"><i class="ti ti-logout"></i> Log out</button>
+    </div>
+  </div>
+  <div class="main">
+    <!-- ── TEACHER SIDE ── -->
+    <div id="tv" style="display:flex;flex:1;overflow:hidden">
+      <div class="sb">
+        <div style="padding:0 8px">
+          <div class="sbl">Planning</div>
+          <div class="ni a" onclick="sp(this,'pl')"><i class="ti ti-calendar-week"></i><span class="nl">Weekly planner</span><div class="ico">i<div class="tip">AI-powered weekly lesson planner. Generate and organize lessons by day and subject.</div></div></div>
+          <div class="ni" onclick="sp(this,'hw')"><i class="ti ti-checklist"></i><span class="nl">Assignments</span><div class="ico">i<div class="tip">Create homework that automatically appears in the parent portal for families to see.</div></div></div>
+          <div class="sbdiv"></div>
+          <div class="sbl">Classroom</div>
+          <div class="ni" onclick="sp(this,'bh')"><i class="ti ti-chart-bar"></i><span class="nl">Behavior chart</span><div class="ico">i<div class="tip">Color-coded daily behavior. Parents see only their child's color — never the full class list.</div></div></div>
+          <div class="ni" onclick="sp(this,'pm')"><i class="ti ti-users"></i><span class="nl">Parent portal</span><div class="ico">i<div class="tip">Invite parents by email, manage access, and upload "How we learned it" teaching videos.</div></div></div>
+          <div class="sbdiv"></div>
+          <div class="sbl">Account</div>
+          <div class="ni" onclick="sp(this,'st')"><i class="ti ti-settings"></i><span class="nl">Settings</span><div class="ico">i<div class="tip">Toggle behavior chart, portal access, notifications, and classroom preferences.</div></div></div>
+        </div>
+        <div class="sbver">Chalk &amp; Co. v1.0 · Pro plan</div>
+      </div>
+      <div class="ct">
+        <!-- PLANNER PANEL -->
+        <div id="p-pl" class="panel a">
+          <div class="pgh"><div><div class="pgt">Weekly planner <span class="aibdg"><i class="ti ti-sparkles"></i>AI</span></div><div class="pgs">Grade 3 · Room 14 · Week of June 9, 2026</div></div><div style="display:flex;gap:7px"><button class="btn bgh bsm" onclick="toast('PDF export coming soon!')"><i class="ti ti-file-export"></i>Export PDF</button><button class="btn byy bsm" onclick="document.getElementById('aig').classList.toggle('o')"><i class="ti ti-sparkles"></i>Generate with AI</button></div></div>
+          <div style="padding:18px 22px">
+            <div class="aig" id="aig">
+              <div class="ait"><i class="ti ti-sparkles"></i>AI lesson plan generator</div>
+              <div class="airow">
+                <div class="aif"><label>Subject</label><select id="aisub"><option>Mathematics</option><option>ELA / Reading</option><option>Science</option><option>Social studies</option><option>Art</option><option>PE</option></select></div>
+                <div class="aif"><label>Grade</label><select><option>Grade 3</option><option>Grade 2</option><option>Grade 4</option><option>Grade 5</option></select></div>
+                <div class="aif"><label>Standard / topic</label><input type="text" id="aistd" placeholder="e.g. 3.NBT.A.2"/></div>
+                <div class="aif"><label>Duration</label><select><option>45 min</option><option>30 min</option><option>60 min</option></select></div>
+                <div style="align-self:flex-end"><button class="btn byy" id="gbtn" onclick="genL()"><i class="ti ti-sparkles"></i>Generate</button></div>
+              </div>
+              <div class="aires" id="aires"></div>
+            </div>
+            <div class="wknav">
+              <button class="btn bgh bsm"><i class="ti ti-chevron-left"></i></button>
+              <span class="wklbl">June 9 – 13, 2026</span>
+              <button class="btn bgh bsm"><i class="ti ti-chevron-right"></i></button>
+              <button class="btn bgh bsm" style="margin-left:auto">Today</button>
+            </div>
+            <div class="plwrap">
+              <div class="pgrid">
+                <div class="plhd" style="font-size:8.5px;letter-spacing:.4px">TIME</div>
+                <div class="plhd">Monday</div><div class="plhd">Tuesday</div><div class="plhd">Wednesday</div><div class="plhd">Thursday</div><div class="plhd">Friday</div>
+                <div class="pltime">8:30</div>
+                <div class="plc"><div class="lb cm"><div class="lbt">Math · Addition</div><div class="lbs">3.NBT.A.2 · 45m</div></div></div>
+                <div class="plc"><div class="lb cm"><div class="lbt">Math · Subtraction</div><div class="lbs">Practice & review</div></div></div>
+                <div class="plc"><div class="lb cm"><div class="lbt">Math · Word prob.</div><div class="lbs">Application</div></div></div>
+                <div class="plc"><div class="lb cm"><div class="lbt">Math · Quiz prep</div><div class="lbs">Review game</div></div></div>
+                <div class="plc"><div class="lb cm"><div class="lbt">Math · Quiz</div><div class="lbs">Assessment</div></div></div>
+                <div class="pltime">9:30</div>
+                <div class="plc"><div class="lb ce"><div class="lbt">ELA · Fiction</div><div class="lbs">Charlotte's Web</div></div></div>
+                <div class="plc"><div class="lb ce"><div class="lbt">ELA · Vocabulary</div><div class="lbs">Context clues</div></div></div>
+                <div class="plc"><div class="lb ce"><div class="lbt">ELA · Writing</div><div class="lbs">Character desc.</div></div></div>
+                <div class="plc"><div class="lb ce"><div class="lbt">ELA · Partner read</div><div class="lbs">Fluency</div></div></div>
+                <div class="plc"><div class="lb ce"><div class="lbt">ELA · Share</div><div class="lbs">Student writing</div></div></div>
+                <div class="pltime">10:30</div>
+                <div class="plc"></div>
+                <div class="plc"><div class="lb csc"><div class="lbt">Science · Life cycles</div><div class="lbs">Plant observation</div></div></div>
+                <div class="plc"></div>
+                <div class="plc"><div class="lb csc"><div class="lbt">Science · Lab</div><div class="lbs">Seed germination</div></div></div>
+                <div class="plc"><div class="lb car2"><div class="lbt">Art · Watercolor</div><div class="lbs">Nature painting</div></div></div>
+                <div class="pltime">1:00</div>
+                <div class="plc"><div class="lb css"><div class="lbt">Social studies</div><div class="lbs">Community helpers</div></div></div>
+                <div class="plc"></div>
+                <div class="plc"><div class="lb css"><div class="lbt">Social studies</div><div class="lbs">Map skills</div></div></div>
+                <div class="plc"></div>
+                <div class="plc"><div class="lb cpe"><div class="lbt">PE · Field day</div><div class="lbs">End-of-year games</div></div></div>
+              </div>
+            </div>
+            <div class="leg">
+              <div class="legi"><div class="legd" style="background:#2C4A3E"></div>Math</div>
+              <div class="legi"><div class="legd" style="background:#4A3A22"></div>ELA</div>
+              <div class="legi"><div class="legd" style="background:#3B2A50"></div>Science</div>
+              <div class="legi"><div class="legd" style="background:#5A3622"></div>Social studies</div>
+              <div class="legi"><div class="legd" style="background:#4A2C3E"></div>Art</div>
+              <div class="legi"><div class="legd" style="background:#1A4060"></div>PE</div>
+              <div style="margin-left:auto;font-style:italic;font-size:11px">Click any empty cell to add a lesson</div>
+            </div>
+          </div>
+        </div>
+        <!-- ASSIGNMENTS PANEL -->
+        <div id="p-hw" class="panel">
+          <div class="pgh"><div><div class="pgt">Assignments</div><div class="pgs">Visible to parents in the parent portal</div></div><button class="btn byy bsm" onclick="toast('Add assignment — coming soon!')"><i class="ti ti-plus"></i>Add assignment</button></div>
+          <div style="padding:18px 22px">
+            <div class="hwi"><div class="hwic" style="background:#2C4A3E"><i class="ti ti-math"></i></div><div class="hwb"><div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><div class="hwt">Math — Addition with regrouping</div><span class="sp spm">Math</span></div><div class="hwm">Pages 24–25 in workbook</div><div class="hwd">Due: Tue Jun 10</div></div><button class="btn bgh bsm"><i class="ti ti-edit"></i></button></div>
+            <div class="hwi"><div class="hwic" style="background:#4A3A22"><i class="ti ti-book"></i></div><div class="hwb"><div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><div class="hwt">Read Charlotte's Web — Ch. 4 &amp; 5</div><span class="sp spe">ELA</span></div><div class="hwm">Record 3 new vocabulary words</div><div class="hwd">Due: Wed Jun 11</div></div><button class="btn bgh bsm"><i class="ti ti-edit"></i></button></div>
+            <div class="hwi"><div class="hwic" style="background:#3B2A50"><i class="ti ti-leaf"></i></div><div class="hwb"><div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><div class="hwt">Science journal — plant sketch &amp; label</div><span class="sp sps">Science</span></div><div class="hwm">Draw and label plant parts from class</div><div class="hwd">Due: Fri Jun 13</div></div><button class="btn bgh bsm"><i class="ti ti-edit"></i></button></div>
+            <div class="hwi"><div class="hwic" style="background:#5A3622"><i class="ti ti-map"></i></div><div class="hwb"><div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><div class="hwt">Map activity — label your community</div><span class="sp spss">Social studies</span></div><div class="hwm">Label 5 community helper locations on handout</div><div class="hwd">Due: Thu Jun 12</div></div><button class="btn bgh bsm"><i class="ti ti-edit"></i></button></div>
+          </div>
+        </div>
+        <!-- BEHAVIOR PANEL -->
+        <div id="p-bh" class="panel">
+          <div class="pgh"><div><div class="pgt">Behavior chart</div><div class="pgs">Parents see only their child's color — never the full class</div></div></div>
+          <div style="padding:18px 22px">
+            <div class="card" style="display:flex;align-items:center;gap:13px"><div class="tgl on" onclick="this.classList.toggle('on')"><div class="kn"></div></div><div><div style="font-weight:700;font-size:13px">Behavior chart enabled</div><div style="font-size:12px;color:var(--tl)">Turn off to hide this feature from parents entirely</div></div></div>
+            <div class="card">
+              <div class="ctit"><i class="ti ti-palette"></i>Color meanings — customize what each color stands for</div>
+              <div class="csys">
+                <div class="cchip"><div class="cdp" style="background:#4CAF50"></div><input type="text" value="Great day! 🌟"/></div>
+                <div class="cchip"><div class="cdp" style="background:#FFD700"></div><input type="text" value="Good effort"/></div>
+                <div class="cchip"><div class="cdp" style="background:#FF9800"></div><input type="text" value="Needs a reminder"/></div>
+                <div class="cchip"><div class="cdp" style="background:#F44336"></div><input type="text" value="Tough day"/></div>
+              </div>
+              <div style="font-size:12px;color:var(--tl)">These labels appear in the parent portal next to the color.</div>
+            </div>
+            <div style="font-size:13px;font-weight:700;color:var(--td);margin-bottom:9px">Today's colors <span style="font-weight:400;font-size:12px;color:var(--tl)">— click a dot to assign</span></div>
+            <div class="sgrid">
+              <div class="scard"><div class="sname"><div class="sav2">ER</div>Emma R.</div><div class="cpr"><div class="co s" style="background:#4CAF50" onclick="sc(this)"></div><div class="co" style="background:#FFD700" onclick="sc(this)"></div><div class="co" style="background:#FF9800" onclick="sc(this)"></div><div class="co" style="background:#F44336" onclick="sc(this)"></div></div></div>
+              <div class="scard"><div class="sname"><div class="sav2">LT</div>Liam T.</div><div class="cpr"><div class="co" style="background:#4CAF50" onclick="sc(this)"></div><div class="co s" style="background:#FFD700" onclick="sc(this)"></div><div class="co" style="background:#FF9800" onclick="sc(this)"></div><div class="co" style="background:#F44336" onclick="sc(this)"></div></div></div>
+              <div class="scard"><div class="sname"><div class="sav2">SM</div>Sofia M.</div><div class="cpr"><div class="co s" style="background:#4CAF50" onclick="sc(this)"></div><div class="co" style="background:#FFD700" onclick="sc(this)"></div><div class="co" style="background:#FF9800" onclick="sc(this)"></div><div class="co" style="background:#F44336" onclick="sc(this)"></div></div></div>
+              <div class="scard"><div class="sname"><div class="sav2">NK</div>Noah K.</div><div class="cpr"><div class="co" style="background:#4CAF50" onclick="sc(this)"></div><div class="co" style="background:#FFD700" onclick="sc(this)"></div><div class="co s" style="background:#FF9800" onclick="sc(this)"></div><div class="co" style="background:#F44336" onclick="sc(this)"></div></div></div>
+              <div class="scard"><div class="sname"><div class="sav2">AJ</div>Ava J.</div><div class="cpr"><div class="co s" style="background:#4CAF50" onclick="sc(this)"></div><div class="co" style="background:#FFD700" onclick="sc(this)"></div><div class="co" style="background:#FF9800" onclick="sc(this)"></div><div class="co" style="background:#F44336" onclick="sc(this)"></div></div></div>
+              <div class="scard"><div class="sname"><div class="sav2">MB</div>Marcus B.</div><div class="cpr"><div class="co" style="background:#4CAF50" onclick="sc(this)"></div><div class="co" style="background:#FFD700" onclick="sc(this)"></div><div class="co" style="background:#FF9800" onclick="sc(this)"></div><div class="co s" style="background:#F44336" onclick="sc(this)"></div></div></div>
+              <div class="scard"><div class="sname"><div class="sav2">PL</div>Priya L.</div><div class="cpr"><div class="co s" style="background:#4CAF50" onclick="sc(this)"></div><div class="co" style="background:#FFD700" onclick="sc(this)"></div><div class="co" style="background:#FF9800" onclick="sc(this)"></div><div class="co" style="background:#F44336" onclick="sc(this)"></div></div></div>
+              <div class="scard"><div class="sname"><div class="sav2">OC</div>Oliver C.</div><div class="cpr"><div class="co" style="background:#4CAF50" onclick="sc(this)"></div><div class="co s" style="background:#FFD700" onclick="sc(this)"></div><div class="co" style="background:#FF9800" onclick="sc(this)"></div><div class="co" style="background:#F44336" onclick="sc(this)"></div></div></div>
+            </div>
+            <div style="margin-top:11px;font-size:12px;color:var(--tl)"><i class="ti ti-lock"></i> Parents only see their own child's color. This list is never visible to parents.</div>
+          </div>
+        </div>
+        <!-- PARENT MGMT PANEL -->
+        <div id="p-pm" class="panel">
+          <div class="pgh"><div><div class="pgt">Parent portal</div><div class="pgs">Parents are invite-only — they never see the teacher view</div></div></div>
+          <div style="padding:18px 22px">
+            <div class="card"><div class="ctit"><i class="ti ti-mail"></i>Invite a parent</div>
+              <div class="invr"><input type="text" placeholder="Parent name" style="max-width:165px"/><input type="email" placeholder="parent@email.com"/><input type="text" placeholder="Child's name" style="max-width:150px"/><button class="btn byy" onclick="toast('Invite sent!')"><i class="ti ti-send"></i>Send invite</button></div>
+              <div style="font-size:12px;color:var(--tl)"><i class="ti ti-lock"></i> Parents receive a private link. They can only view their own child's information.</div>
+            </div>
+            <div class="card"><div class="ctit"><i class="ti ti-users"></i>Connected parents</div>
+              <div class="pr"><div class="pav" style="background:var(--green);color:var(--board-dark)">JR</div><div class="pi"><div class="pn">Jennifer R. <span class="pc2">→ Emma R.</span></div><div class="pe">jennifer.r@gmail.com</div></div><span class="bdg bda">Active</span><button class="bico bsm"><i class="ti ti-trash"></i></button></div>
+              <div class="pr"><div class="pav" style="background:var(--blue);color:#0c447c">DT</div><div class="pi"><div class="pn">David T. <span class="pc2">→ Liam T.</span></div><div class="pe">d.thompson@yahoo.com</div></div><span class="bdg bda">Active</span><button class="bico bsm"><i class="ti ti-trash"></i></button></div>
+              <div class="pr"><div class="pav" style="background:var(--pink);color:#6b0c2e">CM</div><div class="pi"><div class="pn">Carmen M. <span class="pc2">→ Sofia M.</span></div><div class="pe">carmen.m@email.com</div></div><span class="bdg bdp">Invite sent</span><button class="bico bsm"><i class="ti ti-refresh"></i></button></div>
+              <div class="pr"><div class="pav" style="background:#e0d4f5;color:#3b1a60">RL</div><div class="pi"><div class="pn">Raj L. <span class="pc2">→ Priya L.</span></div><div class="pe">raj.l@outlook.com</div></div><span class="bdg bda">Active</span><button class="bico bsm"><i class="ti ti-trash"></i></button></div>
+            </div>
+            <div class="card"><div class="ctit"><i class="ti ti-video"></i>"How we learned it" videos</div>
+              <div style="font-size:13px;color:var(--tl);margin-bottom:12px">Upload short teaching videos so parents can help their kids the same way you do in class.</div>
+              <div class="vzone" onclick="toast('File picker coming soon!')"><i class="ti ti-upload"></i>Click to upload or drag and drop<div style="font-size:11px;margin-top:3px">MP4, MOV · Max 200MB</div></div>
+              <div class="vgrid">
+                <div class="vcard"><div class="vthumb"><i class="ti ti-player-play"></i></div><div class="vinfo"><div class="vtit">Adding with regrouping</div><div class="vdt">June 5 · Math</div></div></div>
+                <div class="vcard"><div class="vthumb"><i class="ti ti-player-play"></i></div><div class="vinfo"><div class="vtit">Context clues</div><div class="vdt">June 3 · ELA</div></div></div>
+                <div class="vcard"><div class="vthumb"><i class="ti ti-player-play"></i></div><div class="vinfo"><div class="vtit">Plant parts</div><div class="vdt">May 28 · Science</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- SETTINGS PANEL -->
+        <div id="p-st" class="panel">
+          <div class="pgh"><div><div class="pgt">Settings</div><div class="pgs">Manage your classroom and portal preferences</div></div></div>
+          <div style="padding:18px 22px">
+            <div class="scard2"><div class="schdr">Behavior chart</div>
+              <div class="srow"><div class="srt"><div class="srl">Enable behavior chart</div><div class="srd">Show the color-coded chart in your classroom view</div></div><div class="tgl on" onclick="this.classList.toggle('on')"><div class="kn"></div></div></div>
+              <div class="srow"><div class="srt"><div class="srl">Share colors with parents</div><div class="srd">Let parents see their child's daily color in the portal</div></div><div class="tgl on" onclick="this.classList.toggle('on')"><div class="kn"></div></div></div>
+              <div class="srow"><div class="srt"><div class="srl">Show 7-day history to parents</div><div class="srd">Parents see the last 7 days of their child's behavior</div></div><div class="tgl" onclick="this.classList.toggle('on')"><div class="kn"></div></div></div>
+            </div>
+            <div class="scard2"><div class="schdr">Parent portal</div>
+              <div class="srow"><div class="srt"><div class="srl">Require email invitation</div><div class="srd">Parents can only join via your personal invite — no open sign-up</div></div><div class="tgl on" onclick="this.classList.toggle('on')"><div class="kn"></div></div></div>
+              <div class="srow"><div class="srt"><div class="srl">Show teaching videos</div><div class="srd">Display your uploaded videos in the parent portal</div></div><div class="tgl on" onclick="this.classList.toggle('on')"><div class="kn"></div></div></div>
+            </div>
+            <div class="scard2"><div class="schdr">Notifications</div>
+              <div class="srow"><div class="srt"><div class="srl">Email me when a parent joins</div><div class="srd">Get notified when a parent accepts their invitation</div></div><div class="tgl on" onclick="this.classList.toggle('on')"><div class="kn"></div></div></div>
+              <div class="srow"><div class="srt"><div class="srl">Weekly planner reminder</div><div class="srd">Remind me every Sunday to plan the upcoming week</div></div><div class="tgl" onclick="this.classList.toggle('on')"><div class="kn"></div></div></div>
+            </div>
+            <div class="scard2"><div class="schdr">Classroom info</div>
+              <div class="srow"><div class="srt"><div class="srl">Teacher name</div><div class="srd" style="margin-top:5px"><input type="text" value="Ms. Sullivan" style="border:1.5px solid var(--bdr);border-radius:7px;padding:7px 10px;font-size:13px;width:200px;outline:none"/></div></div></div>
+              <div class="srow"><div class="srt"><div class="srl">Class</div><div class="srd" style="margin-top:5px"><input type="text" value="Grade 3 · Room 14" style="border:1.5px solid var(--bdr);border-radius:7px;padding:7px 10px;font-size:13px;width:200px;outline:none"/></div></div></div>
+              <div class="srow"><div></div><button class="btn byy bsm" onclick="toast('Settings saved!')">Save changes</button></div>
+            </div>
+          </div>
+        </div>
+      </div><!-- ct -->
+    </div><!-- tv -->
+    <!-- ── PARENT VIEW ── -->
+    <div id="pv">
+      <div class="pvhdr">
+        <div class="pvht"><div class="pvlog"><span class="dot"></span>Chalk &amp; Co. <span style="font-size:11px;opacity:.48;margin-left:7px;font-weight:400;font-family:var(--u)">Parent portal</span></div><div style="font-size:11.5px;opacity:.6">Ms. Sullivan · Grade 3 · Room 14</div></div>
+        <div style="font-size:13px;opacity:.72;margin-top:2px">Welcome back, Jennifer — viewing info for <strong>Emma R.</strong></div>
+      </div>
+      <div class="pvnav">
+        <div class="pvni a" onclick="pvt(this,'phw')">Homework</div>
+        <div class="pvni" onclick="pvt(this,'pvid')">How we learned it</div>
+        <div class="pvni" onclick="pvt(this,'pbeh')">Behavior</div>
+      </div>
+      <div class="pvc">
+        <div id="phw" class="pvtab a">
+          <div class="pvth">This week's homework for Emma</div>
+          <div class="pvts">Assigned by Ms. Sullivan · Week of June 9, 2026</div>
+          <div class="hwi"><div class="hwic" style="background:#2C4A3E"><i class="ti ti-math"></i></div><div class="hwb"><div class="hwt">Math — Addition with regrouping</div><div class="hwm">Pages 24–25 in workbook</div><div class="hwd">Due: Tue Jun 10</div></div></div>
+          <div class="hwi"><div class="hwic" style="background:#4A3A22"><i class="ti ti-book"></i></div><div class="hwb"><div class="hwt">Read Charlotte's Web — Ch. 4 &amp; 5</div><div class="hwm">Record 3 new vocabulary words</div><div class="hwd">Due: Wed Jun 11</div></div></div>
+          <div class="hwi"><div class="hwic" style="background:#3B2A50"><i class="ti ti-leaf"></i></div><div class="hwb"><div class="hwt">Science journal — plant sketch &amp; label</div><div class="hwm">Draw and label plant parts from class</div><div class="hwd">Due: Fri Jun 13</div></div></div>
+        </div>
+        <div id="pvid" class="pvtab">
+          <div class="pvth">How we learned it</div>
+          <div class="pvts">Short videos showing how Ms. Sullivan taught each topic — help Emma practice the same way at home.</div>
+          <div class="vgrid">
+            <div class="vcard"><div class="vthumb"><i class="ti ti-player-play"></i></div><div class="vinfo"><div class="vtit">Adding with regrouping</div><div class="vdt">June 5 · Math</div></div></div>
+            <div class="vcard"><div class="vthumb"><i class="ti ti-player-play"></i></div><div class="vinfo"><div class="vtit">Context clues</div><div class="vdt">June 3 · ELA</div></div></div>
+            <div class="vcard"><div class="vthumb"><i class="ti ti-player-play"></i></div><div class="vinfo"><div class="vtit">Plant parts</div><div class="vdt">May 28 · Science</div></div></div>
+          </div>
+        </div>
+        <div id="pbeh" class="pvtab">
+          <div class="pvth">Emma's behavior</div>
+          <div class="pvts">Ms. Sullivan marks a color at the end of each day. You can only see Emma's color — not other students.</div>
+          <div class="bdisp">
+            <div style="font-size:12px;color:var(--tl);margin-bottom:4px">Today · Monday, June 9</div>
+            <div class="bcircle" style="background:#4CAF50"></div>
+            <div class="blbl">Great day! 🌟</div>
+            <div class="bdesc">Emma had a wonderful day in class today.</div>
+            <div style="height:1px;background:var(--bdr);margin:16px 0"></div>
+            <div style="font-size:12px;font-weight:700;color:var(--tl);margin-bottom:10px">This week</div>
+            <div class="bhist">
+              <div class="bhd"><div class="bhdot" style="background:#4CAF50"></div><div class="bhlbl">Mon</div></div>
+              <div class="bhd"><div class="bhdot" style="background:#FFD700"></div><div class="bhlbl">Tue</div></div>
+              <div class="bhd"><div class="bhdot" style="background:#4CAF50"></div><div class="bhlbl">Wed</div></div>
+              <div class="bhd"><div class="bhdot" style="background:#4CAF50"></div><div class="bhlbl">Thu</div></div>
+              <div class="bhd"><div class="bhdot" style="background:var(--bdr)"></div><div class="bhlbl">Fri</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- pv -->
+  </div><!-- main -->
+</div><!-- appwrap -->
+<!-- AI Chat -->
+<div class="aichat">
+  <div class="aiwin" id="aiwin">
+    <div class="aiwh"><span><i class="ti ti-sparkles"></i> AI assistant</span><button onclick="this.closest('.aiwin').classList.remove('o')">✕</button></div>
+    <div class="aimsgs" id="aimsgs"><div class="am b">Hi Ms. Sullivan! I can help generate lesson plans, suggest activities, or answer questions. What do you need?</div></div>
+    <div class="ainrow"><input type="text" id="aiin" placeholder="Ask anything..." onkeydown="if(event.key==='Enter')sendai()"/><button onclick="sendai()"><i class="ti ti-send"></i></button></div>
+  </div>
+  <button class="aibn" onclick="document.getElementById('aiwin').classList.toggle('o')" title="AI assistant"><i class="ti ti-sparkles"></i></button>
+</div>
+</div><!-- #app -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── PAGE ROUTING ───
+function show(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  const el=document.getElementById(id);
+  el.classList.add('on');
+  if(id==='land'){el.scrollTop=0}
+}
+
+// ─── LANDING SCROLL ───
+function scrollsec(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth'});
+}
+
+// ─── CAROUSEL DOTS ───
+let di=0;
+setInterval(()=>{
+  ['d0','d1','d2'].forEach((d,i)=>document.getElementById(d).classList.toggle('a',i===di));
+  di=(di+1)%3;
+},4000);
+
+// ─── BILLING TOGGLE ───
+let yearly=false;
+function togBill(){
+  yearly=!yearly;
+  const sw=document.getElementById('bsw');
+  sw.classList.toggle('y',yearly);
+  document.getElementById('lbm').classList.toggle('a',!yearly);
+  document.getElementById('lby').classList.toggle('a',yearly);
+  if(yearly){
+    // Essential: $9/mo → $7.50/mo annually ($90/yr, save $18)
+    document.getElementById('esspr').innerHTML='<sup>$</sup>7.50<sub>/mo</sub>';
+    document.getElementById('essbi').textContent='Billed annually ($90/year)';
+    document.getElementById('essan').textContent='Save $18 vs monthly — 2 months free';
+    // Pro: $16/mo → $13/mo annually ($156/yr, save $36)
+    document.getElementById('propr').innerHTML='<sup>$</sup>13<sub>/mo</sub>';
+    document.getElementById('probi').textContent='Billed annually ($156/year)';
+    document.getElementById('proan').textContent='Save $36 vs monthly — 2 months free';
+    // School: $12/teacher/mo → $10/teacher/mo annually
+    document.getElementById('schpr').innerHTML='<sup>$</sup>10<sub>/teacher/mo</sub>';
+    document.getElementById('schbi').textContent='Min. 3 teachers · billed annually';
+    document.getElementById('schan').textContent='Save $24/teacher/year — 2 months free';
+  }else{
+    document.getElementById('esspr').innerHTML='<sup>$</sup>9<sub>/mo</sub>';
+    document.getElementById('essbi').textContent='Billed monthly · cancel anytime';
+    document.getElementById('essan').textContent='';
+    document.getElementById('propr').innerHTML='<sup>$</sup>16<sub>/mo</sub>';
+    document.getElementById('probi').textContent='Billed monthly · cancel anytime';
+    document.getElementById('proan').textContent='';
+    document.getElementById('schpr').innerHTML='<sup>$</sup>12<sub>/teacher/mo</sub>';
+    document.getElementById('schbi').textContent='Min. 3 teachers · billed monthly';
+    document.getElementById('schan').textContent='';
+  }
+}
+
+// ─── PAYMENT ───
+function openpay(plan){
+  document.getElementById('paynm').textContent=plan+' Plan';
+  const prices={Essential:yearly?'$7.50/month (billed $90/year)':'$9/month',Pro:yearly?'$13/month (billed $156/year)':'$16/month',School:yearly?'$10/teacher/month (billed annually)':'$12/teacher/month'};
+  document.getElementById('paysub2').textContent='14-day free trial, then '+prices[plan];
+  document.getElementById('paymod').classList.add('on');
+}
+function startTrial(){
+  document.getElementById('paymod').classList.remove('on');
+  toast('Trial started! Welcome to Chalk & Co.!');
+  setTimeout(()=>show('app'),1600);
+}
+document.getElementById('paymod').addEventListener('click',function(e){if(e.target===this)this.classList.remove('on')});
+
+// ─── LOGIN ───
+function ltab(t){
+  document.getElementById('fsi').style.display=t==='si'?'block':'none';
+  document.getElementById('fsu').style.display=t==='su'?'block':'none';
+  document.getElementById('tsi').classList.toggle('a',t==='si');
+  document.getElementById('tsu').classList.toggle('a',t==='su');
+  document.getElementById('lerr').classList.remove('on');
+}
+function dologin(){
+  const e=document.getElementById('sie').value.trim();
+  const p=document.getElementById('sip').value.trim();
+  if((e==='teacher@chalk.co'||e==='')&&(p==='chalk2026'||p==='')){
+    show('app');
+  }else{
+    document.getElementById('lerr').classList.add('on');
+  }
+}
+function doLogout(){
+  document.getElementById('sie').value='';
+  document.getElementById('sip').value='';
+  show('land');
+}
+
+// ─── APP NAV ───
+function sv(v){
+  document.getElementById('tv').style.display=v==='t'?'flex':'none';
+  document.getElementById('pv').style.display=v==='p'?'flex':'none';
+  document.getElementById('bT').classList.toggle('a',v==='t');
+  document.getElementById('bP').classList.toggle('a',v==='p');
+}
+function sp(el,id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('a'));
+  document.getElementById('p-'+id).classList.add('a');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('a'));
+  el.classList.add('a');
+}
+function pvt(el,id){
+  document.querySelectorAll('.pvtab').forEach(t=>t.classList.remove('a'));
+  document.getElementById(id).classList.add('a');
+  document.querySelectorAll('.pvni').forEach(n=>n.classList.remove('a'));
+  el.classList.add('a');
+}
+
+// ─── AI GENERATOR ───
+const lessons={
+  Mathematics:[
+    {t:'Multiplication arrays',s:'3.OA.A.1',o:'Model multiplication as equal groups using arrays up to 5×5.',a:'Array hopscotch, whiteboard practice, partner array art',m:'Grid paper, counters, whiteboards',h:'Create 3 multiplication arrays at home using household objects'},
+    {t:'Fractions on a number line',s:'3.NF.A.2',o:'Accurately place 1/2, 1/3, and 1/4 on a number line.',a:'Fraction Clothesline activity, gallery walk, exit ticket',m:'Yarn, fraction cards',h:'Fold a paper strip into halves, thirds, and fourths'}
+  ],
+  'ELA / Reading':[{t:'Main idea & key details',s:'RI.3.2',o:'Identify the main idea and 2–3 key details from a nonfiction passage.',a:'Umbrella graphic organizer, partner text talk, cold read',m:'Leveled readers, graphic organizer printout',h:'Read one page and write 1 sentence for the main idea'}],
+  Science:[{t:'States of matter',s:'2-PS1-1',o:'Sort materials by state and describe observable properties.',a:'Matter sorting station, ice observation, Kahoot! review',m:'Ice cubes, water, sorting cards',h:'Find 3 examples of each state of matter at home'}],
+  'Social studies':[{t:'Map skills — your community',s:'SS.3.G.1',o:'Identify and label key features on a community map.',a:'Map walk, create-your-own-map, partner share',m:'Printed community maps, colored pencils',h:'Draw a simple map of your route from home to school'}],
+  Art:[{t:'Watercolor techniques',s:'VA.3.C.1',o:'Practice wet-on-wet and wet-on-dry watercolor techniques.',a:'Technique demo, free exploration, gallery display',m:'Watercolor paper, paints, brushes',h:'Create a small watercolor painting of something from nature'}],
+  PE:[{t:'Cooperative games',s:'PE.3.M.1',o:'Participate in team games demonstrating cooperation and sportsmanship.',a:'Parachute games, relay races, team problem-solving challenges',m:'Parachute, cones, relay batons',h:'Teach a family member a new outdoor game you learned'}]
+};
+function genL(){
+  const btn=document.getElementById('gbtn');
+  const subj=document.getElementById('aisub').value;
+  btn.innerHTML='<i class="ti ti-loader-2 ti-spin"></i> Generating...';
+  btn.disabled=true;
+  setTimeout(()=>{
+    const pool=lessons[subj]||lessons.Mathematics;
+    const l=pool[Math.floor(Math.random()*pool.length)];
+    const r=document.getElementById('aires');
+    r.innerHTML=`<div style="font-size:13px;font-weight:700;color:var(--yellow);margin-bottom:6px">${subj} — ${l.t} <span style="font-weight:400;opacity:.55;font-size:11px">(${l.s})</span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12px"><div><div style="font-weight:700;font-size:9.5px;letter-spacing:.5px;opacity:.52;margin-bottom:2px">OBJECTIVE</div>${l.o}</div><div><div style="font-weight:700;font-size:9.5px;letter-spacing:.5px;opacity:.52;margin-bottom:2px">ACTIVITIES</div>${l.a}</div><div><div style="font-weight:700;font-size:9.5px;letter-spacing:.5px;opacity:.52;margin-bottom:2px">MATERIALS</div>${l.m}</div><div><div style="font-weight:700;font-size:9.5px;letter-spacing:.5px;opacity:.52;margin-bottom:2px">HOMEWORK</div>${l.h}</div></div><div style="margin-top:12px;display:flex;gap:8px"><button class="btn byy bsm" onclick="toast('Lesson added to planner!')">Add to planner</button><button style="background:rgba(255,255,255,.1);color:#fff;border:none;border-radius:7px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:var(--u)" onclick="genL()">Regenerate</button></div>`;
+    r.classList.add('on');
+    btn.innerHTML='<i class="ti ti-sparkles"></i> Generate';
+    btn.disabled=false;
+  },1300);
+}
+
+// ─── BEHAVIOR ───
+function sc(el){
+  el.closest('.cpr').querySelectorAll('.co').forEach(c=>c.classList.remove('s'));
+  el.classList.add('s');
+}
+
+// ─── AI CHAT ───
+const aiR={
+  lesson:['Use the "Generate with AI" button in the Weekly Planner. Pick your subject, grade, standard, and duration — I\'ll build a full plan in seconds!'],
+  homework:['Head to the Assignments tab to create homework. It appears automatically in every parent\'s portal.'],
+  behavior:['The Behavior Chart tab lets you mark each student\'s color. Customize what each color means in Settings. Parents only see their own child\'s color.'],
+  parent:['Invite parents by email from the Parent Portal tab. Once they accept, they see homework, videos, and their child\'s behavior color — nothing else.'],
+  video:['Upload "How we learned it" videos in the Parent Portal tab. Parents see them in their portal under the same tab name.'],
+  planner:['The Weekly Planner shows your full week at a glance. Click "Generate with AI" to have me build lesson plans for you!'],
+  settings:['In Settings you can toggle the behavior chart on/off, control what parents see, set up notifications, and update your classroom info.']
+};
+const dflt=['I can help with lesson planning, assignments, the behavior chart, or the parent portal. What are you working on?','Tell me what you need and I\'ll do my best to help!','Great question! Try asking me about lesson plans, behavior tracking, or how to invite parents.'];
+function sendai(){
+  const inp=document.getElementById('aiin');
+  const msgs=document.getElementById('aimsgs');
+  const val=inp.value.trim();
+  if(!val)return;
+  msgs.innerHTML+=`<div class="am u">${val}</div>`;
+  inp.value='';
+  msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    const k=Object.keys(aiR).find(k=>val.toLowerCase().includes(k));
+    const pool=k?aiR[k]:dflt;
+    const reply=pool[Math.floor(Math.random()*pool.length)];
+    msgs.innerHTML+=`<div class="am b">${reply}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  },700);
+}
+
+// ─── TOAST ───
+let tT;
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('on'),2400);
+}
+</script>
+</body>
+</html>
